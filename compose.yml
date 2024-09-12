@@ -1,0 +1,93 @@
+version: "3.8"
+services:
+  user-service:
+    build: ./services/user
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - MONGO_URI=mongodb://user-db:27017/users
+    depends_on:
+      - user-db
+    networks:
+      - ecommerce-network
+
+  product-service:
+    build: ./services/product
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - MONGO_URI=mongodb://product-db:27017/products
+    depends_on:
+      - product-db
+    networks:
+      - ecommerce-network
+
+  order-service:
+    build: ./services/order
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - MONGO_URI=mongodb://order-db:27017/orders
+      - RABBITMQ_URL=amqp://rabbitmq
+    depends_on:
+      - order-db
+      - rabbitmq
+    networks:
+      - ecommerce-network
+
+  payment-service:
+    build: ./services/payment
+    ports:
+      - "3004:3004"
+    environment:
+      - PORT=3004
+      - MONGO_URI=mongodb://payment-db:27017/payments
+      - RABBITMQ_URL=amqp://rabbitmq
+    depends_on:
+      - payment-db
+      - rabbitmq
+    networks:
+      - ecommerce-network
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - ecommerce-network
+
+  user-db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - ecommerce-network
+
+  product-db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - ecommerce-network
+
+  order-db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - ecommerce-network
+
+  payment-db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
