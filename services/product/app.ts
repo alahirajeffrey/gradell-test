@@ -12,7 +12,6 @@ import {
 dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27018/user-db";
-const RABBITMQ_URL = process.env.RABBITMQ_URL || "amqp://rabbitmq:5672";
 
 // connect to mongodb
 mongoose
