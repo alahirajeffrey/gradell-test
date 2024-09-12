@@ -36,6 +36,8 @@ app.post("/users/register", async (req: Request, res: Response) => {
       passwordHash: passwordHash,
     });
 
+    // send request to payment service to create wallet
+
     res
       .status(201)
       .json({ message: "user registered successfully", data: user });
