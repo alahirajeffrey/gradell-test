@@ -9,7 +9,12 @@ export const publisher = async (
   messagePattern: string
 ) => {
   try {
-    const connection = await amqplib.connect(process.env.RABBITMQ_URL);
+    const connection = await amqplib.connect({
+      password: process.env.RABBITMQ_PASSWORD,
+      username: process.env.RABBITMQ_USERNAME,
+      hostname: process.env.RABBITMQ_HOSTNAME,
+      port: Number(process.env.RABBITMQ_PORT),
+    });
     const channel = await connection.createChannel();
 
     const payload = {
