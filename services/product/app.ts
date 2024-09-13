@@ -40,25 +40,46 @@ async function startConsumer() {
 
   channel.consume("product_queue", async (msg) => {
     if (msg !== null) {
-      const { action, data } = JSON.parse(msg.content.toString());
-      console.log("received message:", { action, data });
+      const { action, data, correlationId } = JSON.parse(
+        msg.content.toString()
+      );
+      console.log("received message:", { action, data, correlationId });
 
       try {
+        let response;
+
+        // create product
         if (action === "create") {
           const newProduct = await createProduct(data);
-          console.log("product created:", newProduct);
+          console.log("product created");
+          response = { success: true, data: newProduct };
+
+          // get all products
         } else if (action === "getAll") {
           const products = await getProducts();
-          console.log("products:", products);
+          console.log("products requested");
+          response = { success: true, data: products };
+
+          // get single product
         } else if (action === "getSingle") {
           const product = await getSingleProduct(data);
-          console.log("product:", product);
+          console.log("product requested");
+          response = { success: true, data: product };
+
+          // update product
         } else if (action === "update") {
-          await await updateProductQuantity(data);
+          const updatedProduct = await updateProductQuantity(data);
           console.log("product quantity updated");
+          response = { success: true, data: updatedProduct };
         } else {
           console.log("unknown action:", action);
         }
+
+        channel.sendToQueue(
+          "response_queue",
+          Buffer.from(JSON.stringify(response)),
+          { correlationId }
+        );
 
         channel.ack(msg);
       } catch (error) {
