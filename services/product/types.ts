@@ -3,6 +3,7 @@ export type ProductType = {
   price: number;
   description: string;
   quantity: number;
+  sellerId: string;
 };
 
 export type UpdateProductQuantityType = {
