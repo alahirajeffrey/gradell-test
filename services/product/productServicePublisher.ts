@@ -22,12 +22,8 @@ export const publisher = async (
       data: data,
     };
 
-    // await channel.assertQueue(queueName);
+    await channel.assertQueue(queueName);
     channel.sendToQueue(queueName, Buffer.from(JSON.stringify(payload)));
-
-    // confirm if it is best practice to close connection
-    await channel.close();
-    await connection.close();
   } catch (error) {
     console.log(error);
     throw error;
