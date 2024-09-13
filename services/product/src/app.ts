@@ -11,7 +11,8 @@ import {
 // setup dotenv
 dotenv.config();
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27018/user-db";
+const MONGO_URI =
+  process.env.MONGO_URI || "mongodb://localhost:27018/product-db";
 
 // connect to mongodb
 mongoose
@@ -71,6 +72,8 @@ async function startConsumer() {
           const updatedProduct = await updateProductQuantity(data);
           console.log("product quantity updated");
           response = { success: true, data: updatedProduct };
+
+          // unknown action
         } else {
           console.log("unknown action:", action);
         }
