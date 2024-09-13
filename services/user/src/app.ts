@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
-import router from "./routers";
+import router from "./routes";
 import amqplib from "amqplib";
 
 // setup dotenv
