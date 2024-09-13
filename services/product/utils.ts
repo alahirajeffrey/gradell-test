@@ -8,6 +8,7 @@ export const createProduct = async (product: ProductType) => {
       price: product.price,
       description: product.description,
       quantity: product.quantity,
+      sellerId: product.sellerId,
     });
   } catch (error: any) {
     console.log(error);
