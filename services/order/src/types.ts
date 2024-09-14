@@ -1,5 +1,5 @@
 export type OrderType = {
-  productId: object;
+  products: [];
   deliveryAddress: string;
   totalCost: number;
 };
