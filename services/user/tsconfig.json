@@ -9,11 +9,6 @@
     "outDir": "./dist",
     "rootDir": "./src"
   },
-  "include": [
-    "src",
-    "../gateway/src/decodeToken.ts",
-    "../gateway/src/sendMessageWithResponse.ts",
-    "../gateway/src/types.d.ts"
-  ],
+  "include": ["src", "../gateway/src/types.d.ts"],
   "exclude": ["node_modules"]
 }
