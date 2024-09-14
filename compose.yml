@@ -2,11 +2,8 @@ version: "3.8"
 services:
   # user-service:
   #   build: ./services/user
-  #   ports:
-  #     - "3001:3001"
-  #   environment:
-  #     - PORT=3001
-  #     - MONGO_URI=mongodb://user-db:27017/users
+  #   env_file:
+  #     - .env
   #   depends_on:
   #     - user-db
   #   networks:
@@ -14,11 +11,8 @@ services:
 
   # product-service:
   #   build: ./services/product
-  #   ports:
-  #     - "3002:3002"
-  #   environment:
-  #     - PORT=3002
-  #     - MONGO_URI=mongodb://product-db:27017/products
+  #   env_file:
+  #     - .env
   #   depends_on:
   #     - product-db
   #   networks:
@@ -26,12 +20,8 @@ services:
 
   # order-service:
   #   build: ./services/order
-  #   ports:
-  #     - "3003:3003"
-  #   environment:
-  #     - PORT=3003
-  #     - MONGO_URI=mongodb://order-db:27017/orders
-  #     - RABBITMQ_URL=amqp://rabbitmq
+  #   env_file:
+  #     - .env
   #   depends_on:
   #     - order-db
   #     - rabbitmq
@@ -40,14 +30,19 @@ services:
 
   # payment-service:
   #   build: ./services/payment
-  #   ports:
-  #     - "3004:3004"
-  #   environment:
-  #     - PORT=3004
-  #     - MONGO_URI=mongodb://payment-db:27017/payments
-  #     - RABBITMQ_URL=amqp://rabbitmq
+  #   env_file:
+  #     - .env
   #   depends_on:
   #     - payment-db
+  #     - rabbitmq
+  #   networks:
+  #     - ecommerce-network
+
+  # gateway-service:
+  #   build: ./services/gateway
+  #   env_file:
+  #     - .env
+  #   depends_on:
   #     - rabbitmq
   #   networks:
   #     - ecommerce-network
@@ -90,7 +85,7 @@ services:
   payment-db:
     image: mongo
     ports:
-      - "27020:27020"
+      - "27020:27017"
     networks:
       - ecommerce-network
     volumes:
