@@ -6,7 +6,7 @@ export const createOrder = async (order: OrderType) => {
     return await Order.create({
       totalCost: order.totalCost,
       deliveryAddress: order.deliveryAddress,
-      productId: order.productId,
+      products: order.products,
     });
   } catch (error: any) {
     console.log(error);
