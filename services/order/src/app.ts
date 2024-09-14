@@ -25,7 +25,7 @@ async function connectRabbitMQ() {
     port: Number(process.env.RABBITMQ_PORT),
   });
   channel = await connection.createChannel();
-  await channel.assertQueue("product_queue");
+  await channel.assertQueue("order_queue");
   console.log("rabbitMQ connected");
 }
 
@@ -33,7 +33,7 @@ async function connectRabbitMQ() {
 async function startConsumer() {
   await connectRabbitMQ();
 
-  channel.consume("product_queue", async (msg) => {
+  channel.consume("order_queue", async (msg) => {
     if (msg !== null) {
       const { action, data, correlationId } = JSON.parse(
         msg.content.toString()
