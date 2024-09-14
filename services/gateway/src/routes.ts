@@ -219,4 +219,41 @@ router.get(
   }
 );
 
+// create order
+router.post(
+  "/payment",
+  verifyToken,
+  async (req: CustomRequest, res: Response) => {
+    const { orderId, amount } = req.body;
+
+    try {
+      const payload = {
+        action: "create",
+        data: {
+          orderId: orderId,
+          amount: amount,
+        },
+      };
+
+      const response: any = await sendMessageWithResponse(
+        payload,
+        "payment_queue"
+      );
+
+      if (response.success) {
+        res
+          .status(201)
+          .json({ message: "payment successful", data: response.data });
+      } else {
+        res.status(400).json({
+          message: "payment failed",
+          error: response.message,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "server error", error });
+    }
+  }
+);
+
 export default router;
