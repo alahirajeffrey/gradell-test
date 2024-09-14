@@ -34,6 +34,8 @@ const connectRabbitMQ = async () => {
   console.log("rabbitMQ connected");
 };
 
+connectRabbitMQ();
+
 // listen for connections
 app.listen(PORT, () => {
   console.log(`user service running on port ${PORT}`);
