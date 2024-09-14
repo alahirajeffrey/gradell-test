@@ -150,3 +150,20 @@ This repo contains code to Gradell Senior Backend Engineer Assessment.
   "amount": 50000
 }
 ```
+
+#### **Pay for an order**
+
+**URL:** `localhost:3000/api/payment`
+
+**Method:** `POST`
+
+**Description:** Pay for an order.
+
+**Request Body:**
+
+```json
+{
+  "orderId": "ccw1351",
+  "amount": 50000
+}
+```
