@@ -1,51 +1,57 @@
 version: "3.8"
 services:
-  # user-service:
-  #   build: ./services/user
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - user-db
-  #   networks:
-  #     - ecommerce-network
+  user-service:
+    build: ./services/user
+    env_file:
+      - .env
+    depends_on:
+      - user-db
+      - rabbitmq
+    networks:
+      - ecommerce-network
 
-  # product-service:
-  #   build: ./services/product
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - product-db
-  #   networks:
-  #     - ecommerce-network
+  product-service:
+    build: ./services/product
+    env_file:
+      - .env
+    depends_on:
+      - product-db
+      - rabbitmq
+    networks:
+      - ecommerce-network
 
-  # order-service:
-  #   build: ./services/order
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - order-db
-  #     - rabbitmq
-  #   networks:
-  #     - ecommerce-network
+  order-service:
+    build: ./services/order
+    env_file:
+      - .env
+    depends_on:
+      - order-db
+      - rabbitmq
+    networks:
+      - ecommerce-network
 
-  # payment-service:
-  #   build: ./services/payment
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - payment-db
-  #     - rabbitmq
-  #   networks:
-  #     - ecommerce-network
+  payment-service:
+    build: ./services/payment
+    env_file:
+      - .env
+    depends_on:
+      - payment-db
+      - rabbitmq
+    networks:
+      - ecommerce-network
 
-  # gateway-service:
-  #   build: ./services/gateway
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #   networks:
-  #     - ecommerce-network
+  gateway-service:
+    build: ./services/gateway
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - payment-service
+      - order-service
+      - user-service
+      - product-service
+    networks:
+      - ecommerce-network
 
   rabbitmq:
     image: "rabbitmq:management"
