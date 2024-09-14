@@ -12,6 +12,7 @@ This repo contains code to Gradell Senior Backend Engineer Assessment.
 
 - Open your terminal and clone the repository using the command `git clone https://github.com/alahirajeffrey/gradell-test.git`
 - Navigate into the cloned repository using `cd gradell-test`
+- Create a `.env` file in each of the services and populate using the `.env.example` file
 - Run the command `docker compose up -d` to use docker to start the application in detached mode
 
 ### Endpoints
