@@ -3,7 +3,7 @@ services:
   user-service:
     build: ./services/user
     env_file:
-      - .env
+      - ./services/user/.env
     depends_on:
       - user-db
       - rabbitmq
@@ -13,7 +13,7 @@ services:
   product-service:
     build: ./services/product
     env_file:
-      - .env
+      - ./services/product/.env
     depends_on:
       - product-db
       - rabbitmq
@@ -23,7 +23,7 @@ services:
   order-service:
     build: ./services/order
     env_file:
-      - .env
+      - ./services/order/.env
     depends_on:
       - order-db
       - rabbitmq
@@ -33,7 +33,7 @@ services:
   payment-service:
     build: ./services/payment
     env_file:
-      - .env
+      - ./services/payment/.env
     depends_on:
       - payment-db
       - rabbitmq
@@ -43,7 +43,7 @@ services:
   gateway-service:
     build: ./services/gateway
     env_file:
-      - .env
+      - ./services/gateway/.env
     depends_on:
       - rabbitmq
       - payment-service
