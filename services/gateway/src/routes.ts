@@ -19,15 +19,15 @@ router.post("/register", async (req: Request, res: Response) => {
 
     const response: any = await sendMessageWithResponse(payload, "user_queue");
 
-    if (response.success) {
+    if (response && response.success) {
       res.status(201).json({ message: "user registered", data: response.data });
-    } else {
-      res.status(400).json({
-        message: "user registration failed",
-        error: response.message,
+    } else if (response && !response.success) {
+      res.status(500).json({
+        error: response?.message || "user registration failed",
       });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "server error", error });
   }
 });
@@ -47,12 +47,11 @@ router.post("/login", async (req: Request, res: Response) => {
 
     const response: any = await sendMessageWithResponse(payload, "user_queue");
 
-    if (response.success) {
+    if (response && response.success) {
       res.status(201).json({ message: "user logged in", data: response.data });
-    } else {
-      res.status(400).json({
-        message: "user login failed",
-        error: response.message,
+    } else if (response && !response.success) {
+      res.status(500).json({
+        error: response?.message || "user login failed",
       });
     }
   } catch (error) {
@@ -84,14 +83,13 @@ router.post(
         "product_queue"
       );
 
-      if (response.success) {
+      if (response && response.success) {
         res
           .status(201)
           .json({ message: "product created", data: response.data });
-      } else {
+      } else if (response && !response.success) {
         res.status(400).json({
           message: "product creation failed",
-          error: response.message,
         });
       }
     } catch (error) {
@@ -114,12 +112,11 @@ router.get("/product/:productId", async (req: Request, res: Response) => {
       "product_queue"
     );
 
-    if (response.success) {
+    if (response && response.success) {
       res.status(200).json({ data: response.data });
-    } else {
+    } else if (response && !response.success) {
       res.status(500).json({
         message: "error occured",
-        error: response.message,
       });
     }
   } catch (error) {
@@ -137,12 +134,11 @@ router.get("/product", async (req: Request, res: Response) => {
       "product_queue"
     );
 
-    if (response.success) {
+    if (response && response.success) {
       res.status(200).json({ data: response.data });
-    } else {
+    } else if (response && !response.success) {
       res.status(500).json({
         message: "error occured",
-        error: response.message,
       });
     }
   } catch (error) {
@@ -172,10 +168,10 @@ router.post(
         "order_queue"
       );
 
-      if (response.success) {
+      if (response && response.success) {
         res.status(201).json({ message: "order created", data: response.data });
-      } else {
-        res.status(400).json({
+      } else if (response && !response.success) {
+        res.status(500).json({
           message: "order creation failed",
           error: response.message,
         });
@@ -206,11 +202,11 @@ router.get(
         "order_queue"
       );
 
-      if (response.success) {
+      if (response && response.success) {
         res.status(201).json({ data: response.data });
-      } else {
-        res.status(400).json({
-          error: response.message,
+      } else if (response && !response.success) {
+        res.status(500).json({
+          error: response?.message || "internal server error",
         });
       }
     } catch (error) {
@@ -240,14 +236,13 @@ router.post(
         "payment_queue"
       );
 
-      if (response.success) {
+      if (response && response.success) {
         res
           .status(201)
           .json({ message: "payment successful", data: response.data });
-      } else {
-        res.status(400).json({
+      } else if (response && !response.success) {
+        res.status(500).json({
           message: "payment failed",
-          error: response.message,
         });
       }
     } catch (error) {
