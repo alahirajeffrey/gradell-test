@@ -36,9 +36,8 @@ async function startConsumer() {
 
   channel.consume("payment_queue", async (msg) => {
     if (msg !== null) {
-      const { action, data, correlationId } = JSON.parse(
-        msg.content.toString()
-      );
+      const { action, data } = JSON.parse(msg.content.toString());
+      const correlationId = msg.properties.correlationId;
       console.log("received message:", { action, data, correlationId });
 
       try {
@@ -63,6 +62,12 @@ async function startConsumer() {
 
         channel.ack(msg);
       } catch (error) {
+        channel.sendToQueue(
+          "response_queue",
+          Buffer.from(JSON.stringify(error)),
+          { correlationId }
+        );
+        channel.ack(msg);
         console.error("error processing message:", error);
       }
     }
@@ -74,5 +79,5 @@ startConsumer()
     console.log("error starting consumer: ", error);
   })
   .then(() => {
-    console.log("payment consumer running");
+    console.log("payment service running");
   });

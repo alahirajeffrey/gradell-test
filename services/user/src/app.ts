@@ -37,18 +37,15 @@ async function startConsumer() {
 
   channel.consume("user_queue", async (msg) => {
     if (msg !== null) {
-      const { action, data, correlationId } = JSON.parse(
-        msg.content.toString()
-      );
-      console.log("received message:", { action, data, correlationId });
+      const { action, data } = JSON.parse(msg.content.toString());
+      const correlationId = msg.properties.correlationId;
 
       try {
         let response;
-
         // register user
         if (action === "register") {
           const user = await registerUser(data);
-          console.log("user registered");
+          console.log("user reistered");
           response = { success: true, data: user };
 
           // login user
@@ -62,14 +59,22 @@ async function startConsumer() {
           console.log("unknown action:", action);
         }
 
+        // send response back to queue
         channel.sendToQueue(
           "response_queue",
           Buffer.from(JSON.stringify(response)),
           { correlationId }
         );
 
+        // acknowledge message
         channel.ack(msg);
       } catch (error) {
+        channel.sendToQueue(
+          "response_queue",
+          Buffer.from(JSON.stringify(error)),
+          { correlationId }
+        );
+        channel.ack(msg);
         console.error("error processing message:", error);
       }
     }
@@ -81,5 +86,5 @@ startConsumer()
     console.log("error starting consumer: ", error);
   })
   .then(() => {
-    console.log("user consumer running");
+    console.log("user service running");
   });
